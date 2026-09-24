@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>سِجِلّ — منصة تسجيل الأجانب | Sijil — Foreigner Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#faf9f7;--card:#ffffff;--border:#e7e3dc;--text:#20242a;--muted:#6b7280;
+  --primary:hsl(184 62% 25%);--primary-fg:#ffffff;--primary-soft:hsl(184 45% 94%);
+  --ok:#15803d;--ok-bg:#f0fdf4;--warn:#b45309;--warn-bg:#fffbeb;--bad:#b91c1c;--bad-bg:#fef2f2;
+  --radius:10px;--shadow:0 1px 2px rgb(0 0 0 / .05);
+}
+.dark{
+  --bg:#15181c;--card:#1d2126;--border:#31363d;--text:#e8eaed;--muted:#9aa2ad;
+  --primary:hsl(184 38% 50%);--primary-fg:#0d1214;--primary-soft:hsl(184 30% 18%);
+  --ok:#4ade80;--ok-bg:#12271a;--warn:#fbbf24;--warn-bg:#2a2213;--bad:#f87171;--bad-bg:#2b1717;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans','IBM Plex Sans Arabic',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+[lang=ar] body,body:lang(ar){font-family:'IBM Plex Sans Arabic','IBM Plex Sans',system-ui,Tahoma,sans-serif}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace}
+.app{display:flex;min-height:100vh}
+.sidebar{width:252px;flex-shrink:0;border-inline-end:1px solid var(--border);background:var(--card);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;padding:18px 16px;border-bottom:1px solid var(--border)}
+.brand svg{color:var(--primary);flex-shrink:0}
+.brand .t1{font-weight:700;font-size:16px}
+.brand .t2{font-size:11.5px;color:var(--muted)}
+.navsec{padding:14px 10px;flex:1}
+.navlabel{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:0 8px 6px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--text);text-decoration:none;font-size:14px;margin-bottom:2px}
+.nav a svg{color:var(--muted);flex-shrink:0}
+.nav a.active{background:var(--primary-soft);font-weight:600}
+.nav a.active svg{color:var(--primary)}
+.nav a:hover{background:var(--primary-soft)}
+.nav .cnt{margin-inline-start:auto;background:var(--border);border-radius:999px;font-size:11.5px;padding:1px 8px;font-weight:600}
+.sidefoot{padding:12px 16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted)}
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 22px;border-bottom:1px solid var(--border);background:var(--card);position:sticky;top:0;z-index:5}
+.topnote{font-size:12.5px;color:var(--muted)}
+.spacer{flex:1}
+.iconbtn{border:1px solid var(--border);background:transparent;color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.iconbtn:hover{background:var(--primary-soft)}
+.content{padding:26px 28px;max-width:1080px;width:100%;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px;font-weight:700}
+.sub{color:var(--muted);margin:0 0 22px;font-size:14px}
+h2{font-size:15.5px;margin:0 0 12px;font-weight:600}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
+.stat{display:flex;gap:12px;align-items:center}
+.stat .ic{width:40px;height:40px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat .v{font-size:20px;font-weight:700;line-height:1.1}
+.stat .l{font-size:12.5px;color:var(--muted)}
+.pipe{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pipe .step{display:flex;gap:10px}
+.pipe .n{width:26px;height:26px;border-radius:999px;background:var(--primary);color:var(--primary-fg);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.pipe .h{font-weight:600;font-size:13.5px}
+.pipe .d{font-size:12.5px;color:var(--muted)}
+.alist{display:flex;flex-direction:column}
+.aitem{display:flex;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.aitem:last-child{border-bottom:0}
+.aitem .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:1px 7px;color:var(--muted);white-space:nowrap}
+.aitem .when{margin-inline-start:auto;color:var(--muted);font-size:12px;white-space:nowrap}
+.btn{background:var(--primary);color:var(--primary-fg);border:1px solid var(--primary);border-radius:8px;padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.outline{background:transparent;color:var(--text);border-color:var(--border)}
+.btn.outline:hover{background:var(--primary-soft);filter:none}
+.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+.btn.sm{padding:6px 12px;font-size:13px}
+.ep{border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px}
+.ep .head{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.mtd{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;border:1px solid}
+.mtd.get{color:#0a7a55;border-color:#0a7a5566;background:#0a7a5514}
+.dark .mtd.get{color:#4ade9c}
+.mtd.post{color:#a16207;border-color:#a1620766;background:#a1620714}
+.dark .mtd.post{color:#fbbf24}
+.scp{font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:2px 8px;color:var(--muted)}
+.eppath{font-family:'IBM Plex Mono',monospace;font-size:12.5px;direction:ltr;unicode-bidi:embed}
+.jsonout{direction:ltr;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.55;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:10px;max-height:260px;overflow:auto;white-space:pre}
+.ephead2{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.ephead2 .ic{width:36px;height:36px;border-radius:8px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.steps{display:flex;align-items:center;gap:8px;margin:0 0 22px;flex-wrap:wrap}
+.steps .s{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+.steps .s .b{width:24px;height:24px;border-radius:999px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:var(--card)}
+.steps .s.on{color:var(--text);font-weight:600}
+.steps .s.on .b{background:var(--primary);border-color:var(--primary);color:var(--primary-fg)}
+.steps .sep{width:26px;height:1px;background:var(--border)}
+.drop{border:1.5px dashed var(--border);border-radius:var(--radius);padding:26px;text-align:center;background:var(--card)}
+.drop img{max-width:min(430px,100%);max-height:300px;border-radius:8px;border:1px solid var(--border)}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12.5px;font-weight:600;color:var(--muted)}
+.field input,.field select,.field textarea{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:14px;color:var(--text);font-family:inherit;width:100%}
+.field textarea{font-family:'IBM Plex Mono',monospace;direction:ltr;text-align:left;font-size:12.5px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--primary);outline-offset:0;border-color:var(--primary)}
+.vlist{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.v{display:flex;gap:8px;align-items:center;font-size:13px;border-radius:7px;padding:6px 10px}
+.v.ok{background:var(--ok-bg);color:var(--ok)}
+.v.warn{background:var(--warn-bg);color:var(--warn)}
+.v.fail{background:var(--bad-bg);color:var(--bad)}
+.banner{border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;border:1px solid}
+.banner.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.banner.warn{background:var(--warn-bg);border-color:var(--warn);color:var(--warn)}
+.banner.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.banner .bt{font-weight:700;font-size:15.5px;margin-bottom:3px}
+.banner .bb{font-size:13.5px;color:var(--text)}
+.mcard{border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;background:var(--card);margin-bottom:12px}
+.mhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.score{font-size:19px;font-weight:700;color:var(--primary)}
+.bars{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 22px;margin-top:12px}
+.bar .bl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.bar .tr{height:5px;background:var(--border);border-radius:99px;margin-top:3px;overflow:hidden}
+.bar .fi{height:100%;background:var(--primary);border-radius:99px}
+.bar .fi.neg{background:var(--bad)}
+.badge{display:inline-flex;align-items:center;border:1px solid var(--border);background:var(--bg);border-radius:999px;font-size:11.5px;padding:2px 10px;font-weight:500;white-space:nowrap}
+.badge.pri{background:var(--primary-soft);border-color:transparent;color:var(--primary);font-weight:600}
+.badge.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.badge.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.badge.bad{background:var(--bad-bg);color:var(--bad);border-color:transparent}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;color:var(--muted);text-align:start;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--border)}
+td{padding:11px 10px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--primary-soft)}
+.pname a{color:var(--primary);font-weight:600;text-decoration:none}
+.pname .sec{font-size:12px;color:var(--muted)}
+.search{width:100%;max-width:430px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 13px;font-size:14px;color:var(--text);font-family:inherit;margin-bottom:16px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px 20px}
+.kv .k{font-size:11.5px;color:var(--muted);font-weight:600}
+.kv .val{font-size:14px;font-weight:500}
+.doc{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:9px}
+.doc .ic{width:34px;height:34px;border-radius:8px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.note{font-size:12.5px;color:var(--muted);background:var(--bg);border:1px dashed var(--border);border-radius:8px;padding:9px 12px;margin-top:12px}
+.empty{text-align:center;color:var(--muted);padding:36px 10px;font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+#toast{position:fixed;inset-block-end:22px;inset-inline-start:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);border-radius:9px;padding:10px 20px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+[dir=rtl] #toast{transform:translateX(50%)}
+#toast.show{opacity:1}
+.mt16{margin-top:16px}.mb16{margin-bottom:16px}.mut{color:var(--muted)}.fs12{font-size:12.5px}.fs13{font-size:13px}
+@media(max-width:880px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;border-inline-end:0;border-bottom:1px solid var(--border)}
+  .navsec{padding:8px 10px}
+  .nav{display:flex;gap:4px;overflow-x:auto}
+  .nav a{white-space:nowrap}
+  .navlabel,.sidefoot{display:none}
+  .grid4{grid-template-columns:1fr 1fr}
+  .pipe{grid-template-columns:1fr}
+  .formgrid{grid-template-columns:1fr}
+  .content{padding:18px 14px}
+  .bars{grid-template-columns:1fr}
+  .topbar{padding:10px 14px}
+  .topnote{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-label="Sijil logo">
+        <rect x="2" y="6" width="30" height="22" rx="4" stroke="currentColor" stroke-width="2.2"/>
+        <circle cx="11" cy="15" r="3.2" stroke="currentColor" stroke-width="2"/>
+        <path d="M6 24c1-3 3-4.2 5-4.2s4 1.2 5 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M20 12.5h8M20 17h8M20 21.5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div><div class="t1" data-t="appName"></div><div class="t2" data-t="appSubtitle"></div></div>
+    </div>
+    <div class="navsec">
+      <div class="navlabel" data-t="navSection"></div>
+      <nav class="nav" id="nav"></nav>
+    </div>
+    <div class="sidefoot" data-t="standaloneNote"></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <span class="topnote" data-t="demoNote"></span>
+      <span class="spacer"></span>
+      <button class="iconbtn" id="btn-reset" title=""></button>
+      <button class="iconbtn" id="btn-lang"></button>
+      <button class="iconbtn" id="btn-theme"></button>
+    </div>
+    <div class="content" id="view"></div>
+  </main>
+</div>
+<div id="toast"></div>
+<script>
+"use strict";
+/* ═══════════════ i18n ═══════════════ */
+const dict = {
+appName:{en:"Sijil",ar:"سِجِلّ"},appSubtitle:{en:"Foreigner Registration Platform",ar:"منصة تسجيل الأجانب"},
+navDashboard:{en:"Dashboard",ar:"لوحة المتابعة"},navRegister:{en:"New Registration",ar:"تسجيل جديد"},
+navPersons:{en:"Person Registry",ar:"سجل الأشخاص"},navReviews:{en:"Review Queue",ar:"قائمة المراجعة"},
+navSection:{en:"Registry",ar:"السجل"},langToggle:{en:"العربية",ar:"English"},
+navIntegrations:{en:"Integrations",ar:"التكاملات"},
+intTitle:{en:"Government Integration APIs",ar:"واجهات التكامل الحكومية"},
+intSubtitle:{en:"Partner-facing REST APIs (v1) for Ministry of Health and Ministry of Planning applications — key-scoped, audited, TLS-only.",ar:"واجهات REST (الإصدار 1) لتطبيقات وزارة الصحة ووزارة التخطيط — بمفاتيح مقيدة الصلاحيات وتدقيق كامل واتصال مشفر."},
+intStandaloneNote:{en:"In this standalone edition the endpoints below are simulated locally against the browser data — the hosted edition serves them as real REST APIs behind an API gateway.",ar:"في هذه النسخة المستقلة تُحاكى الواجهات أدناه محليًا على بيانات المتصفح — أما النسخة المستضافة فتقدمها كواجهات REST حقيقية خلف بوابة API."},
+intMoh:{en:"Ministry of Health Applications",ar:"تطبيقات وزارة الصحة"},
+intMohDesc:{en:"Identity verification for hospital desks, EMR demographic sync, and birth/death notifications that reuse the registry UPI.",ar:"التحقق من الهوية لمكاتب المستشفيات، ومزامنة البيانات الديموغرافية لأنظمة الملف الطبي، وإشعارات المواليد والوفيات المرتبطة بالرقم الموحد UPI."},
+intMop:{en:"Ministry of Planning Applications",ar:"تطبيقات وزارة التخطيط"},
+intMopDesc:{en:"Aggregate, anonymized statistics for planning dashboards — no personal data ever leaves the registry.",ar:"إحصاءات مجمعة دون أي بيانات شخصية للوحات متابعة التخطيط — لا تغادر البيانات الشخصية السجل مطلقًا."},
+intAuthNote:{en:"Authentication: X-API-Key header per partner (demo). Production: API gateway with mTLS + OAuth2 client credentials — same scope model.",ar:"المصادقة: مفتاح X-API-Key لكل شريك (تجريبي). في الإنتاج: بوابة API مع mTLS وOAuth2 بنفس نموذج الصلاحيات."},
+intWebhooks:{en:"Webhooks",ar:"الإشعارات اللحظية (Webhooks)"},
+intWebhooksDesc:{en:"Partners subscribe to registry events (person.created, document.linked, birth.notified, death.notified) and receive signed push notifications.",ar:"يشترك الشريك في أحداث السجل (person.created, document.linked, birth.notified, death.notified) ويستقبل إشعارات لحظية موقّعة."},
+intTry:{en:"Try",ar:"تجربة"},intResponse:{en:"Simulated response",ar:"استجابة محاكاة"},intDemoKey:{en:"Demo API key",ar:"مفتاح تجريبي"},
+intVerifyDesc:{en:"Verify a foreigner's identity by document or UNHCR number — returns matched UPI and demographics.",ar:"التحقق من هوية الأجنبي عبر الوثيقة أو رقم المفوضية — يعيد الرقم الموحد UPI والبيانات الأساسية."},
+intPersonDesc:{en:"Full person profile with all linked documents — for EMR/HIS demographic synchronization.",ar:"الملف الكامل للشخص بكل وثائقه المرتبطة — لمزامنة البيانات الديموغرافية مع أنظمة الملف الطبي والمستشفيات."},
+intBirthDesc:{en:"Birth notification from MoH birth-registration applications, linked to the mother's UPI.",ar:"إشعار ميلاد من تطبيقات تسجيل المواليد بوزارة الصحة، مرتبط بالرقم الموحد للأم."},
+intDeathDesc:{en:"Death notification from MoH death-registration applications — flags the UPI in the registry audit trail.",ar:"إشعار وفاة من تطبيقات تسجيل الوفيات بوزارة الصحة — يوثق الواقعة على الرقم الموحد في سجل التدقيق."},
+intStatsDesc:{en:"Aggregate registry counts by nationality, gender, document type, and DOB precision.",ar:"إجماليات مجمعة حسب الجنسية والنوع ونوع الوثيقة ودقة تاريخ الميلاد."},
+intSeriesDesc:{en:"Monthly registration time series with optional from/to filters (YYYY-MM).",ar:"سلسلة زمنية شهرية للتسجيلات مع إمكانية التصفية بالفترة (YYYY-MM)."},
+aud_int_verify:{en:"MoH identity verification (simulated)",ar:"تحقق هوية لوزارة الصحة (محاكاة)"},
+aud_int_birth:{en:"MoH birth notification (simulated)",ar:"إشعار ميلاد من وزارة الصحة (محاكاة)"},
+aud_int_stats:{en:"MoP aggregate summary export (simulated)",ar:"تصدير إحصاءات لوزارة التخطيط (محاكاة)"},
+dashTitle:{en:"Registry Overview",ar:"نظرة عامة على السجل"},
+dashSubtitle:{en:"Central identity registry for foreign residents — one person, one record, many documents.",ar:"السجل المركزي لهوية المقيمين الأجانب — شخص واحد، سجل واحد، وثائق متعددة."},
+statPersons:{en:"Registered persons",ar:"الأشخاص المسجلون"},statDocuments:{en:"Linked documents",ar:"الوثائق المرتبطة"},
+statPending:{en:"Pending reviews",ar:"مراجعات معلّقة"},statResolved:{en:"Resolved reviews",ar:"مراجعات منتهية"},
+recentActivity:{en:"Recent activity",ar:"أحدث الأحداث"},auditEmpty:{en:"No activity yet",ar:"لا توجد أحداث بعد"},
+howItWorks:{en:"Deduplication pipeline",ar:"خط منع التكرار"},
+pipe1:{en:"Deterministic match",ar:"مطابقة حتمية"},pipe1d:{en:"Exact document number or UNHCR number",ar:"رقم الوثيقة أو رقم المفوضية بشكل مطابق"},
+pipe2:{en:"Probabilistic scoring",ar:"تقييم احتمالي"},pipe2d:{en:"Name, DOB, gender, nationality, phone, mother's name",ar:"الاسم، الميلاد، النوع، الجنسية، الهاتف، اسم الأم"},
+pipe3:{en:"Decision thresholds",ar:"عتبات القرار"},pipe3d:{en:"85 or more: auto-link · 60–84: manual review · below 60: new person",ar:"85 فأكثر: ربط تلقائي · من 60 إلى 84: مراجعة يدوية · أقل من 60: شخص جديد"},
+regTitle:{en:"New Registration",ar:"تسجيل جديد"},
+regSubtitle:{en:"Scan an identity document, verify the data, then run the duplicate check.",ar:"امسح وثيقة الهوية، راجع البيانات، ثم شغّل فحص التكرار."},
+step1:{en:"Scan document",ar:"مسح الوثيقة"},step2:{en:"Verify data",ar:"مراجعة البيانات"},
+step3:{en:"Duplicate check",ar:"فحص التكرار"},step4:{en:"Result",ar:"النتيجة"},
+uploadPrompt:{en:"Upload or photograph the identity document",ar:"ارفع أو صوّر وثيقة الهوية"},
+uploadHint:{en:"Passport, UNHCR card, or asylum document — JPG/PNG",ar:"جواز سفر أو كارت المفوضية أو وثيقة لجوء — JPG/PNG"},
+chooseFile:{en:"Choose image",ar:"اختيار صورة"},skipOcr:{en:"Enter data manually",ar:"إدخال البيانات يدويًا"},
+ocrStandalone:{en:"AI extraction runs locally on this device via a local model — no data leaves your machine. You can also paste the passport MRZ lines below as an independent cross-check, or enter data manually.",ar:"يعمل الاستخراج بالذكاء الاصطناعي محليًا على هذا الجهاز عبر نموذج محلي — لا تُرسل أي بيانات خارج جهازك. يمكنك أيضًا لصق سطرَي MRZ أدناه للتحقق المستقل، أو إدخال البيانات يدويًا."},
+ocrRunning:{en:"Extracting data with local AI…",ar:"جارٍ استخراج البيانات بالذكاء الاصطناعي المحلي…"},
+ocrError:{en:"AI extraction failed (is Ollama running?). You can paste MRZ lines or enter data manually.",ar:"فشل الاستخراج بالذكاء الاصطناعي (هل خدمة Ollama تعمل؟). يمكنك لصق سطور MRZ أو إدخال البيانات يدويًا."},
+ocrUseData:{en:"Use this data",ar:"استخدام هذه البيانات"},
+extractedPhoto:{en:"Extracted photo",ar:"الصورة المستخرجة"},
+noOcrData:{en:"Entered manually — no AI extraction data available for this document.",ar:"تم الإدخال يدويًا — لا تتوفر بيانات استخراج بالذكاء الاصطناعي لهذه الوثيقة."},
+mrzLabel:{en:"Passport MRZ lines (optional)",ar:"سطرا MRZ من الجواز (اختياري)"},
+mrzPh:{en:"P<SYRHADDAD<<OMAR<KHALED<<<...\nX1234567<7SYR9508129M3008111<<<<<<<<<<<<<<<6",ar:"P<SYRHADDAD<<OMAR<KHALED<<<...\nX1234567<7SYR9508129M3008111<<<<<<<<<<<<<<<6"},
+parseMrz:{en:"Extract from MRZ",ar:"استخراج من MRZ"},
+mrzBad:{en:"MRZ line 2 not recognized — expected 44 characters",ar:"تعذّر التعرف على سطر MRZ الثاني — المتوقع 44 حرفًا"},
+ocrResults:{en:"Extraction results",ar:"نتائج الاستخراج"},ocrValidations:{en:"Automatic validations",ar:"التحققات الآلية"},
+continueVerify:{en:"Continue to verification",ar:"متابعة إلى المراجعة"},
+mrzCheckValid:{en:"MRZ check digit valid",ar:"رقم تحقق MRZ صحيح"},mrzCheckInvalid:{en:"MRZ check digit INVALID",ar:"رقم تحقق MRZ غير صحيح"},
+fDocNumber:{en:"document number",ar:"رقم الوثيقة"},fDob:{en:"date of birth",ar:"تاريخ الميلاد"},fExpiry:{en:"expiry date",ar:"تاريخ الانتهاء"},
+notExpired:{en:"Document is not expired",ar:"الوثيقة سارية"},isExpired:{en:"Document is expired",ar:"الوثيقة منتهية الصلاحية"},
+dobPlausible:{en:"Date of birth is plausible",ar:"تاريخ الميلاد منطقي"},
+personSection:{en:"Person details",ar:"بيانات الشخص"},documentSection:{en:"Document details",ar:"بيانات الوثيقة"},
+nameAr:{en:"Full name (Arabic)",ar:"الاسم الكامل (عربي)"},nameEn:{en:"Full name (Latin)",ar:"الاسم الكامل (لاتيني)"},
+dob:{en:"Date of birth",ar:"تاريخ الميلاد"},dobPrecision:{en:"DOB precision",ar:"دقة تاريخ الميلاد"},
+precFull:{en:"Full date",ar:"تاريخ كامل"},precMonth:{en:"Year & month",ar:"سنة وشهر"},precYear:{en:"Year only (estimated)",ar:"سنة فقط (تقديري)"},
+gender:{en:"Gender",ar:"النوع"},male:{en:"Male",ar:"ذكر"},female:{en:"Female",ar:"أنثى"},
+nationality:{en:"Nationality",ar:"الجنسية"},phone:{en:"Phone (optional)",ar:"الهاتف (اختياري)"},
+motherName:{en:"Mother's name (optional)",ar:"اسم الأم (اختياري)"},unhcrNumber:{en:"UNHCR number (if any)",ar:"رقم المفوضية (إن وجد)"},
+docType:{en:"Document type",ar:"نوع الوثيقة"},passport:{en:"Passport",ar:"جواز سفر"},
+asylum_document:{en:"Asylum document",ar:"وثيقة لجوء"},unhcr_card:{en:"UNHCR card",ar:"كارت المفوضية"},otherDoc:{en:"Other",ar:"أخرى"},
+docNumber:{en:"Document number",ar:"رقم الوثيقة"},issuingCountry:{en:"Issuing country / authority",ar:"جهة / دولة الإصدار"},
+issueDate:{en:"Issue date",ar:"تاريخ الإصدار"},expiryDate:{en:"Expiry date",ar:"تاريخ الانتهاء"},
+runCheck:{en:"Run duplicate check",ar:"تشغيل فحص التكرار"},back:{en:"Back",ar:"رجوع"},
+evalRejectedTitle:{en:"Document already registered",ar:"الوثيقة مسجلة بالفعل"},
+evalRejectedBody:{en:"This exact document is already linked to an existing person. Registration is blocked.",ar:"هذه الوثيقة مرتبطة بالفعل بشخص مسجل. تم إيقاف التسجيل."},
+evalAutoTitle:{en:"Existing person identified",ar:"تم التعرف على شخص مسجل"},
+evalAutoBody:{en:"This registration matches an existing record. The new document will be linked to the same person — no duplicate record is created.",ar:"هذا التسجيل يطابق سجلًا قائمًا. سيتم ربط الوثيقة الجديدة بنفس الشخص — دون إنشاء سجل مكرر."},
+evalReviewTitle:{en:"Possible duplicate — needs review",ar:"تشابه محتمل — يتطلب مراجعة"},
+evalReviewBody:{en:"The data is similar to one or more existing records. The registration will be held in the review queue for a registrar's decision.",ar:"البيانات متشابهة مع سجل قائم أو أكثر. سيتم تعليق التسجيل في قائمة المراجعة لقرار الموظف المختص."},
+evalNewTitle:{en:"No match found",ar:"لا يوجد تطابق"},
+evalNewBody:{en:"No existing record matches this person. A new person record will be created with a unique identifier (UPI).",ar:"لا يوجد سجل مطابق لهذا الشخص. سيتم إنشاء سجل جديد برقم تعريف موحد (UPI)."},
+matchScore:{en:"Match score",ar:"درجة التطابق"},matchedRule:{en:"Matched by",ar:"قاعدة المطابقة"},
+candidates:{en:"Candidate matches",ar:"السجلات المرشحة"},breakdown:{en:"Score breakdown",ar:"تفصيل الدرجة"},
+bName:{en:"Name",ar:"الاسم"},bDob:{en:"Birth date",ar:"الميلاد"},bGender:{en:"Gender",ar:"النوع"},
+bNationality:{en:"Nationality",ar:"الجنسية"},bPhone:{en:"Phone",ar:"الهاتف"},bMother:{en:"Mother",ar:"الأم"},bIds:{en:"Identifiers",ar:"المعرّفات"},
+confirmRegistration:{en:"Confirm registration",ar:"تأكيد التسجيل"},startNew:{en:"Start new registration",ar:"بدء تسجيل جديد"},
+viewPerson:{en:"View person record",ar:"عرض سجل الشخص"},
+doneLinked:{en:"Document linked successfully",ar:"تم ربط الوثيقة بنجاح"},doneCreated:{en:"New person registered",ar:"تم تسجيل شخص جديد"},
+doneReview:{en:"Held for manual review",ar:"تم التحويل للمراجعة اليدوية"},
+doneReviewBody:{en:"A review case was opened. A registrar must decide before any record is created.",ar:"تم فتح حالة مراجعة. يجب أن يبتّ الموظف المختص قبل إنشاء أي سجل."},
+personsTitle:{en:"Person Registry",ar:"سجل الأشخاص"},
+personsSubtitle:{en:"Every person has one master record (UPI) with all identity documents linked to it.",ar:"لكل شخص سجل رئيسي واحد (UPI) ترتبط به جميع وثائق الهوية."},
+searchPlaceholder:{en:"Search by name, UPI, or document number…",ar:"ابحث بالاسم أو الرقم الموحد أو رقم الوثيقة…"},
+colPerson:{en:"Person",ar:"الشخص"},colUpi:{en:"UPI",ar:"الرقم الموحد"},colNationality:{en:"Nationality",ar:"الجنسية"},
+colDob:{en:"Birth date",ar:"الميلاد"},colDocs:{en:"Documents",ar:"الوثائق"},
+noResults:{en:"No matching records",ar:"لا توجد سجلات مطابقة"},
+linkedDocuments:{en:"Linked identity documents",ar:"وثائق الهوية المرتبطة"},
+docLinkNote:{en:"All documents are linked to the same Unique Person Identifier (UPI). Adding or replacing a document never creates a new person record.",ar:"جميع الوثائق مرتبطة بنفس المعرّف الموحّد للشخص (UPI). إضافة وثيقة أو استبدالها لا يُنشئ سجلًا جديدًا للشخص أبدًا."},
+deletePerson:{en:"Delete person",ar:"حذف الشخص"},
+deletePersonConfirm:{en:"Permanently delete this person and all their linked documents? This cannot be undone.",ar:"هل تريد حذف هذا الشخص وجميع وثائقه المرتبطة نهائيًا؟ لا يمكن التراجع عن هذا الإجراء."},
+personDeleted:{en:"Person deleted",ar:"تم حذف الشخص"},
+aud_person_deleted:{en:"Person record deleted (testing)",ar:"تم حذف سجل شخص (تجريبي)"},
+active:{en:"Active",ar:"سارية"},expired:{en:"Expired",ar:"منتهية"},estimated:{en:"estimated",ar:"تقديري"},
+registeredAt:{en:"Registered on",ar:"تاريخ التسجيل"},
+reviewsTitle:{en:"Manual Review Queue",ar:"قائمة المراجعة اليدوية"},
+reviewsSubtitle:{en:"Registrations with a match score between 60 and 84 are held here until a registrar decides.",ar:"التسجيلات التي تتراوح درجة تطابقها بين 60 و84 تُعلَّق هنا حتى يبتّ الموظف المختص."},
+reviewsEmpty:{en:"No pending review cases — the queue is clear.",ar:"لا توجد حالات مراجعة معلّقة — قائمة الانتظار فارغة."},
+reviewCase:{en:"Review case",ar:"حالة مراجعة"},incomingData:{en:"Incoming registration data",ar:"بيانات التسجيل الواردة"},
+actionLink:{en:"Link to this person",ar:"ربط بهذا الشخص"},actionNew:{en:"Create new person",ar:"إنشاء شخص جديد"},
+actionReject:{en:"Reject registration",ar:"رفض التسجيل"},resolveDone:{en:"Review case resolved",ar:"تم حسم حالة المراجعة"},
+resolvedCases:{en:"Resolved cases",ar:"الحالات المحسومة"},
+linkedS:{en:"Linked to existing person",ar:"رُبطت بشخص قائم"},newPersonS:{en:"New person created",ar:"أُنشئ شخص جديد"},rejectedS:{en:"Rejected",ar:"مرفوضة"},
+requiredFields:{en:"Please complete the required fields",ar:"يرجى استكمال الحقول المطلوبة"},
+demoNote:{en:"Standalone demo — data is stored in this browser only",ar:"نسخة تجريبية مستقلة — تُحفظ البيانات في هذا المتصفح فقط"},
+standaloneNote:{en:"Standalone offline edition · one person, one record, many documents",ar:"نسخة مستقلة دون خادم · شخص واحد، سجل واحد، وثائق متعددة"},
+resetData:{en:"Reset demo data",ar:"إعادة تعيين البيانات"},
+resetConfirm:{en:"Reset all data back to the demo seed?",ar:"إعادة تعيين كل البيانات إلى الوضع التجريبي الأولي؟"},
+resetDone:{en:"Demo data reset",ar:"تمت إعادة التعيين"},
+ruleR1:{en:"R1 — Exact document match",ar:"R1 — تطابق حتمي لرقم الوثيقة"},
+ruleR2:{en:"R2 — UNHCR number match",ar:"R2 — تطابق رقم المفوضية"},
+ruleR3:{en:"R3 — Probabilistic score",ar:"R3 — تقييم احتمالي"},
+aud_seed:{en:"Seeded demo registry with 5 persons and 6 documents",ar:"تم تجهيز السجل التجريبي بخمسة أشخاص وست وثائق"},
+aud_seed_review:{en:"Seeded pending review case (similar identity, different document type)",ar:"حالة مراجعة تجريبية معلّقة (هوية متشابهة بوثيقة مختلفة)"},
+aud_registered:{en:"New person registered",ar:"تم تسجيل شخص جديد"},
+aud_linked:{en:"Document linked to existing person",ar:"تم ربط وثيقة بشخص قائم"},
+aud_review_created:{en:"Registration held for manual review",ar:"تم تعليق تسجيل للمراجعة اليدوية"},
+aud_review_linked:{en:"Review resolved: same person, document linked",ar:"حُسمت المراجعة: نفس الشخص وتم ربط الوثيقة"},
+aud_review_new:{en:"Review resolved: new person created",ar:"حُسمت المراجعة: تم إنشاء شخص جديد"},
+aud_review_rejected:{en:"Review resolved: registration rejected",ar:"حُسمت المراجعة: تم رفض التسجيل"},
+aud_rejected_attempt:{en:"Duplicate document attempt blocked",ar:"تم صد محاولة تسجيل وثيقة مكررة"}
+};
+let lang = "ar";
+const T = k => (dict[k] ? dict[k][lang] : k);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtDate = iso => { if(!iso) return "—"; try { return new Date(iso).toLocaleDateString(lang==="ar"?"ar-EG":"en-GB",{year:"numeric",month:"short",day:"numeric"});} catch(e){ return iso; } };
+
+/* ═══════════════ Engine: normalization & similarity (port of server/normalize.ts) ═══════════════ */
+function normalizeArabic(s){return (s||"").replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ئ/g,"ي").replace(/ؤ/g,"و").replace(/ء/g,"").replace(/ة/g,"ه").replace(/[^\u0600-\u06FF\s]/g," ").replace(/\s+/g," ").trim();}
+function normalizeLatin(s){let x=(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z\s]/g," ").replace(/\s+/g," ").trim();return x.replace(/ph/g,"f").replace(/gh/g,"g").replace(/kh/g,"k").replace(/sh/g,"s").replace(/th/g,"t").replace(/dh/g,"d").replace(/ou/g,"u").replace(/oo/g,"u").replace(/ee/g,"i").replace(/aa/g,"a").replace(/(.)\1+/g,"$1");}
+const AR2LAT={"ا":"a","ب":"b","ت":"t","ث":"t","ج":"g","ح":"h","خ":"k","د":"d","ذ":"d","ر":"r","ز":"z","س":"s","ش":"s","ص":"s","ض":"d","ط":"t","ظ":"z","ع":"a","غ":"g","ف":"f","ق":"k","ك":"k","ل":"l","م":"m","ن":"n","ه":"h","و":"u","ي":"i","ة":"h"};
+function translitAr(s){const n=normalizeArabic(s);let o="";for(const c of n)o+=AR2LAT[c]??(c===" "?" ":"");return normalizeLatin(o);}
+function normDocNo(s){return (s||"").replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d))).toUpperCase().replace(/[^A-Z0-9]/g,"");}
+function normPhone(s){if(!s)return "";const d=s.replace(/[٠-٩]/g,x=>String("٠١٢٣٤٥٦٧٨٩".indexOf(x))).replace(/\D/g,"");return d.length>10?d.slice(-10):d;}
+function jw(a,b){if(!a||!b)return 0;if(a===b)return 1;const w=Math.max(0,Math.floor(Math.max(a.length,b.length)/2)-1);const am=new Array(a.length).fill(false),bm=new Array(b.length).fill(false);let m=0;
+for(let i=0;i<a.length;i++){const lo=Math.max(0,i-w),hi=Math.min(b.length-1,i+w);for(let j=lo;j<=hi;j++){if(!bm[j]&&a[i]===b[j]){am[i]=bm[j]=true;m++;break;}}}
+if(!m)return 0;let t=0,k=0;for(let i=0;i<a.length;i++){if(am[i]){while(!bm[k])k++;if(a[i]!==b[k])t++;k++;}}
+const j0=(m/a.length+m/b.length+(m-t/2)/m)/3;let p=0;for(let i=0;i<Math.min(4,a.length,b.length);i++){if(a[i]===b[i])p++;else break;}
+return j0+p*0.1*(1-j0);}
+function nameSim(a,b){if(!a||!b)return 0;const full=jw(a.replace(/\s+/g,""),b.replace(/\s+/g,""));const ta=a.split(" ").filter(Boolean),tb=b.split(" ").filter(Boolean);const used=new Set();let sum=0;
+for(const t of ta){let best=0,bj=-1;tb.forEach((u,j)=>{if(used.has(j))return;const s=jw(t,u);if(s>best){best=s;bj=j;}});if(bj>=0)used.add(bj);sum+=best;}
+return Math.max(full,sum/Math.max(ta.length,tb.length));}
+/* MRZ ICAO 9303 */
+function mrzVal(c){if(c>="0"&&c<="9")return c.charCodeAt(0)-48;if(c>="A"&&c<="Z")return c.charCodeAt(0)-55;return 0;}
+function mrzCheck(f){let s=0;for(let i=0;i<f.length;i++)s+=mrzVal(f[i])*[7,3,1][i%3];return s%10;}
+function yy2yyyy(yy,future){const n=Number(yy);const cur=new Date().getFullYear()%100;if(future)return (n>=0&&n<=cur+30)?2000+n:1900+n;return n<=cur?2000+n:1900+n;}
+function parseMrz(text){
+  const lines=(text||"").toUpperCase().replace(/[ \t]/g,"").split(/\n+/).map(l=>l.trim()).filter(Boolean);
+  let l1=null,l2=null;
+  for(const l of lines){if(/^P</.test(l))l1=l;else if(l.length>=28&&/^[A-Z0-9<]+$/.test(l))l2=l;}
+  if(!l2)return null;
+  const r={checks:[],fields:{}};
+  const docRaw=l2.slice(0,9);r.fields.docNumber=docRaw.replace(/</g,"");
+  r.checks.push({f:"fDocNumber",ok:mrzCheck(docRaw)===Number(l2[9])});
+  r.fields.natCode=l2.slice(10,13).replace(/</g,"");
+  const dobRaw=l2.slice(13,19);
+  r.checks.push({f:"fDob",ok:mrzCheck(dobRaw)===Number(l2[19])});
+  r.fields.dob=`${yy2yyyy(dobRaw.slice(0,2),false)}-${dobRaw.slice(2,4)}-${dobRaw.slice(4,6)}`;
+  r.fields.gender=l2[20]==="F"?"female":"male";
+  const expRaw=l2.slice(21,27);
+  r.checks.push({f:"fExpiry",ok:mrzCheck(expRaw)===Number(l2[27])});
+  r.fields.expiryDate=`${yy2yyyy(expRaw.slice(0,2),true)}-${expRaw.slice(2,4)}-${expRaw.slice(4,6)}`;
+  if(l1){const nm=l1.slice(5).split("<<");const sur=(nm[0]||"").replace(/</g," ").trim();const giv=(nm[1]||"").replace(/</g," ").trim();r.fields.nameEn=(giv+" "+sur).trim();r.fields.issCode=l1.slice(2,5).replace(/</g,"");}
+  return r;
+}
+
+/* ═══════════════ Engine: AI OCR (local Qwen3-VL via Ollama) ═══════════════ */
+// Ollama is called once by the Python backend; the browser does not call it directly.
+const OLLAMA_MODEL="qwen3-vl:4b";
+const OCR_FIELD_KEYS=["nameAr","nameEn","dob","gender","nationality","docNumber","issuingCountry","issueDate","expiryDate"];
+const OCR_PROMPT=`You are reading an identity document (passport, UNHCR card, or asylum document) for a foreigner registration system. The document may be printed in any language.
+
+Extract exactly these fields, using ISO 8601 dates (YYYY-MM-DD):
+- nameAr: REQUIRED whenever the document shows the name in Arabic script anywhere, OR you can transliterate the Latin name into Arabic. Only omit this if the document has zero Arabic-related information to work from.
+- nameEn: full name transliterated to Latin script
+- dob: date of birth
+- gender: exactly "male" or "female"
+- nationality: nationality, in English
+- docNumber: the document/passport number
+- issuingCountry: issuing country or authority
+- issueDate: date of issue (omit if not present)
+- expiryDate: date of expiry (omit if not present)
+
+Every field must also carry your confidence: "high" (clearly printed), "medium" (legible but something is uncertain), or "low" (blurry, partially obscured, or you are essentially guessing).
+
+Also classify docType as exactly one of: "passport", "asylum_document", "unhcr_card", "other".
+
+photoBox is REQUIRED in every response, with no exceptions: find the bounding box of the MAIN, LARGEST portrait photograph of the document holder (ignore any small secondary ghost/watermark photo elsewhere on the document, e.g. overlapping the document number), as fractions of the full image width/height (0.0 to 1.0), x/y being the top-left corner. Only omit photoBox if the document truly has zero photo anywhere on it.
+
+Return ONLY a JSON object, no other text, in this shape:
+{"docType":"passport","photoBox":{"x":0.05,"y":0.15,"width":0.25,"height":0.35},"fields":{"nameEn":{"value":"...","confidence":"high"}}}
+Omit any field you cannot read rather than guessing.`;
+const SIJIL_VERIFY_URL = "http://127.0.0.1:8787/api/verify-document";
+function dataUrlToBlob(dataUrl){
+  const parts=dataUrl.split(",");
+  const mime=(parts[0].match(/:(.*?);/)||[])[1]||"image/jpeg";
+  const binary=atob(parts[1]);
+  const bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  return new Blob([bytes],{type:mime});
+}
+function camelKey(key){return String(key||"").replace(/_([a-z])/g,(_,c)=>c.toUpperCase());}
+function normalizeBackendOcr(record){
+  record=record||{};
+  const fields={};
+  Object.entries(record.fields||{}).forEach(([key,value])=>{
+    const k=camelKey(key);
+    fields[k]=value&&typeof value==="object"&&"value" in value
+      ? value
+      : {value:String(value??""),confidence:"medium"};
+  });
+  if(record.issuing_country&&!fields.issuingCountry)
+    fields.issuingCountry={value:record.issuing_country,confidence:"medium"};
+  const rawType=String(record.document_type||"").toLowerCase();
+  let docType="other";
+  if(rawType.includes("passport")||rawType.includes("جواز"))docType="passport";
+  else if(rawType.includes("unhcr"))docType="unhcr_card";
+  else if(rawType.includes("asylum")||rawType.includes("لجوء"))docType="asylum_document";
+  return {...record,docType,photoBox:record.photo_box||null,fields};
+}
+async function runOcr(dataUrl,filename){
+  window.dispatchEvent(new CustomEvent("sijil-verification-start"));
+  try{
+    const form=new FormData();
+    form.append("image",dataUrlToBlob(dataUrl),filename||"document.jpg");
+    const res=await fetch(SIJIL_VERIFY_URL,{method:"POST",body:form});
+    const contentType=res.headers.get("content-type")||"";
+    let payload={};
+    if(contentType.includes("application/json")){
+      payload=await res.json();
+    }else{
+      const text=await res.text();
+      throw new Error(text.slice(0,240)||("Backend returned HTTP "+res.status+" without JSON."));
+    }
+    if(!res.ok||!payload.ok)throw new Error(payload.error||("HTTP "+res.status));
+    window.__sijilVerificationResult=payload;
+    window.dispatchEvent(new CustomEvent("sijil-verification-result",{detail:payload}));
+    return normalizeBackendOcr(payload.ocr&&payload.ocr.record);
+  }catch(error){
+    window.dispatchEvent(new CustomEvent("sijil-verification-error",{detail:{message:String(error&&error.message||error)}}));
+    throw error;
+  }
+}
+function padBox(box,margin){
+  margin=margin||0.15;
+  const dx=box.width*margin,dy=box.height*margin;
+  const nx=Math.max(0,box.x-dx),ny=Math.max(0,box.y-dy);
+  const nw=Math.min(1-nx,box.width+2*dx),nh=Math.min(1-ny,box.height+2*dy);
+  return{x:nx,y:ny,width:nw,height:nh};
+}
+function cropPhoto(dataUrl,box){
+  return new Promise((resolve,reject)=>{
+    if(!box||!(box.width>0)||!(box.height>0)){reject(new Error("no photo box"));return;}
+    box=padBox(box);
+    const img=new Image();
+    img.onload=()=>{
+      const w=img.naturalWidth,h=img.naturalHeight;
+      const sx=Math.max(0,box.x*w),sy=Math.max(0,box.y*h);
+      const sw=Math.min(w-sx,box.width*w),sh=Math.min(h-sy,box.height*h);
+      if(sw<=0||sh<=0){reject(new Error("invalid photo box"));return;}
+      const c=document.createElement("canvas");c.width=sw;c.height=sh;
+      c.getContext("2d").drawImage(img,sx,sy,sw,sh,0,0,sw,sh);
+      resolve(c.toDataURL("image/png"));
+    };
+    img.onerror=()=>reject(new Error("image load failed"));
+    img.src=dataUrl;
+  });
+}
+
+/* ═══════════════ Engine: matching (port of server/matching.ts) ═══════════════ */
+const AUTO=85, REVIEW=60, W={name:40,dob:25,gender:5,nationality:10,phone:12,motherName:8};
+function dobScore(aDob,aPrec,bDob,bPrec){
+  const [ay,am,ad]=aDob.split("-"),[by,bm,bd]=bDob.split("-");
+  if(ay!==by){const diff=Math.abs(Number(ay)-Number(by));if(diff===1&&(aPrec==="year"||bPrec==="year"))return{score:W.dob*0.25,conflict:false};return{score:0,conflict:true};}
+  if(aPrec!=="full"||bPrec!=="full")return{score:W.dob*0.5,conflict:false};
+  if(am===bm&&ad===bd)return{score:W.dob,conflict:false};
+  if(am===bm)return{score:W.dob*0.6,conflict:false};
+  return{score:W.dob*0.35,conflict:false};
+}
+function scoreCandidate(input,person){
+  const p=input.person,reasons=[];
+  const arA=normalizeArabic(p.nameAr),enA=normalizeLatin(p.nameEn);
+  const simAr=nameSim(arA,person.nameArNorm),simEn=nameSim(enA,person.nameEnNorm);
+  const simCross=Math.max(nameSim(translitAr(p.nameAr),person.nameEnNorm),nameSim(enA,translitAr(person.nameAr)));
+  const ns=Math.max(simAr,simEn,simCross*0.95),nameScore=ns*W.name;
+  if(ns>=0.92)reasons.push("name_strong");else if(ns>=0.8)reasons.push("name_similar");
+  const d=dobScore(p.dob,p.dobPrecision,person.dob,person.dobPrecision);
+  if(d.score>=W.dob)reasons.push("dob_exact");if(d.conflict)reasons.push("dob_conflict");
+  const g=p.gender===person.gender?W.gender:-15;if(g<0)reasons.push("gender_conflict");
+  const nat=normalizeLatin(p.nationality)===normalizeLatin(person.nationality)?W.nationality:0;
+  const pa=normPhone(p.phone),pb=normPhone(person.phone);const ph=pa&&pb&&pa===pb?W.phone:0;if(ph>0)reasons.push("phone_match");
+  let mo=0;if(p.motherName&&person.motherName){const s=nameSim(normalizeArabic(p.motherName),normalizeArabic(person.motherName));mo=s>=0.85?W.motherName:s<=0.4?-8:s*W.motherName*0.5;if(s>=0.85)reasons.push("mother_name_match");}
+  let ids=0;if(p.unhcrNumber&&person.unhcrNumber&&normDocNo(p.unhcrNumber)===normDocNo(person.unhcrNumber)){ids=20;reasons.push("unhcr_number_match");}
+  const breakdown={name:Math.round(nameScore*10)/10,dob:Math.round(d.score*10)/10,gender:g,nationality:nat,phone:ph,motherName:Math.round(mo*10)/10,identifiers:ids};
+  const raw=nameScore+d.score+g+nat+ph+mo+ids;
+  return{personId:person.id,score:Math.max(0,Math.min(100,Math.round(raw*10)/10)),breakdown,reasons};
+}
+function evaluate(input){
+  const docHit=DB.documents.find(d=>d.docType===input.document.docType&&d.docNumberNorm===normDocNo(input.document.docNumber)&&(d.issuingCountry||"").trim().toLowerCase()===(input.document.issuingCountry||"").trim().toLowerCase());
+  if(docHit)return{decision:"rejected_duplicate",personId:docHit.personId,documentId:docHit.id,rule:"R1_EXACT_DOCUMENT",candidates:[]};
+  const candidates=DB.persons.map(p=>scoreCandidate(input,p)).filter(c=>c.score>=35).sort((a,b)=>b.score-a.score).slice(0,5);
+  if(input.person.unhcrNumber){const un=normDocNo(input.person.unhcrNumber);const hit=DB.persons.find(p=>p.unhcrNumber&&normDocNo(p.unhcrNumber)===un);
+    if(hit){const c=candidates.find(x=>x.personId===hit.id);return{decision:"auto_match",personId:hit.id,score:c?c.score:100,rule:"R2_UNHCR_NUMBER",candidates};}}
+  const top=candidates[0];
+  if(top&&top.score>=AUTO)return{decision:"auto_match",personId:top.personId,score:top.score,rule:"R3_PROBABILISTIC",candidates};
+  if(top&&top.score>=REVIEW)return{decision:"review",candidates};
+  return{decision:"new",candidates};
+}
+
+/* ═══════════════ Store (localStorage with in-memory fallback) ═══════════════ */
+const LS_KEY="sijil-standalone-v1";
+let DB=null;
+function canLS(){try{localStorage.setItem("__t","1");localStorage.removeItem("__t");return true;}catch(e){return false;}}
+const HAS_LS=canLS();
+function saveDB(){if(HAS_LS){try{localStorage.setItem(LS_KEY,JSON.stringify(DB));}catch(e){}}}
+function newDB(){return{seq:{person:0,doc:0,review:0,audit:0},persons:[],documents:[],reviews:[],audit:[]};}
+function audit(type,msgKey,extra){DB.audit.unshift({id:++DB.seq.audit,type,msgKey,extra:extra||"",at:new Date().toISOString()});DB.audit=DB.audit.slice(0,60);}
+function upi(n){return "FRN-2026-"+String(n).padStart(6,"0");}
+function createPerson(p){const id=++DB.seq.person;const rec={id,upi:upi(id),...p,nameArNorm:normalizeArabic(p.nameAr),nameEnNorm:normalizeLatin(p.nameEn),createdAt:new Date().toISOString()};DB.persons.push(rec);return rec;}
+function addDocument(personId,d){const id=++DB.seq.doc;const rec={id,personId,...d,docNumberNorm:normDocNo(d.docNumber),status:"active",createdAt:new Date().toISOString()};DB.documents.push(rec);return rec;}
+function personById(id){return DB.persons.find(p=>p.id===id);}
+function docById(id){return DB.documents.find(d=>d.id===id);}
+function docsOf(id){return DB.documents.filter(d=>d.personId===id);}
+function personPhoto(p){const d=docsOf(p.id).find(x=>x.photo);return d?d.photo:null;}
+function deletePerson(id){const p=personById(id);if(!p)return;DB.documents=DB.documents.filter(d=>d.personId!==id);DB.persons=DB.persons.filter(x=>x.id!==id);audit("person_deleted","aud_person_deleted",p.upi);saveDB();}
+function seed(){
+  DB=newDB();
+  const S=[
+    {p:{nameAr:"أحمد محمد عثمان إبراهيم",nameEn:"Ahmed Mohamed Osman Ibrahim",dob:"1988-03-14",dobPrecision:"full",gender:"male",nationality:"Sudan",phone:"01234567801",motherName:"فاطمة الطاهر",unhcrNumber:"489-21C04412"},
+     d:[{docType:"passport",docNumber:"P04412876",issuingCountry:"Sudan",issueDate:"2021-06-01",expiryDate:"2026-05-31"},{docType:"unhcr_card",docNumber:"489-21C04412",issuingCountry:"UNHCR Egypt",issueDate:"2022-02-10",expiryDate:"2027-02-09"}]},
+    {p:{nameAr:"مريم يوسف حداد",nameEn:"Mariam Youssef Haddad",dob:"1995-11-02",dobPrecision:"full",gender:"female",nationality:"Syria",phone:"01098765402",motherName:"سميرة نصر",unhcrNumber:""},
+     d:[{docType:"passport",docNumber:"N011238845",issuingCountry:"Syria",issueDate:"2019-04-20",expiryDate:"2025-04-19"}]},
+    {p:{nameAr:"عبد الرحمن صالح الحوثي",nameEn:"Abdelrahman Saleh Alhouthi",dob:"1979-01-01",dobPrecision:"year",gender:"male",nationality:"Yemen",phone:"",motherName:"",unhcrNumber:"735-19C81234"},
+     d:[{docType:"asylum_document",docNumber:"ASY-2019-81234",issuingCountry:"UNHCR Egypt",issueDate:"2019-09-12",expiryDate:""}]},
+    {p:{nameAr:"نيادينق دينق قاي",nameEn:"Nyadeng Deng Gai",dob:"2001-07-22",dobPrecision:"full",gender:"female",nationality:"South Sudan",phone:"01155443322",motherName:"",unhcrNumber:"521-22C00987"},
+     d:[{docType:"unhcr_card",docNumber:"521-22C00987",issuingCountry:"UNHCR Egypt",issueDate:"2022-08-05",expiryDate:"2027-08-04"}]},
+    {p:{nameAr:"خالد إبراهيم موسى",nameEn:"Khaled Ibrahim Moussa",dob:"1992-05-30",dobPrecision:"full",gender:"male",nationality:"Eritrea",phone:"01012349876",motherName:"أستير تسفاي",unhcrNumber:""},
+     d:[{docType:"passport",docNumber:"E4471120",issuingCountry:"Eritrea",issueDate:"2020-01-15",expiryDate:"2025-01-14"}]}
+  ];
+  for(const e of S){const per=createPerson(e.p);for(const d of e.d)addDocument(per.id,d);}
+  audit("seed","aud_seed");
+  const payload={person:{nameAr:"احمد محمد عثمان",nameEn:"Ahmad Mohammed Othman",dob:"1988-01-01",dobPrecision:"year",gender:"male",nationality:"Sudan",phone:"",motherName:"",unhcrNumber:""},
+    document:{docType:"asylum_document",docNumber:"ASY-2026-00777",issuingCountry:"UNHCR Egypt",issueDate:"2026-08-20",expiryDate:""}};
+  const cands=DB.persons.map(p=>scoreCandidate(payload,p)).filter(c=>c.score>=35).sort((a,b)=>b.score-a.score).slice(0,3);
+  DB.reviews.push({id:++DB.seq.review,payload,candidates:cands,status:"pending",createdAt:new Date().toISOString()});
+  audit("review_created","aud_seed_review");
+  saveDB();
+}
+function loadDB(){
+  if(HAS_LS){try{const raw=localStorage.getItem(LS_KEY);if(raw){DB=JSON.parse(raw);if(DB&&DB.persons&&DB.persons.length)return;}}catch(e){}}
+  seed();
+}
+
+/* ═══════════════ UI helpers ═══════════════ */
+const ICONS={
+  dash:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+  reg:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.8-3.5 3.2-5 6-5s5.2 1.5 6 5"/><path d="M18 6v6M15 9h6"/></svg>',
+  ppl:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8.5" cy="8" r="3.2"/><path d="M2.5 20c.7-3.2 3-4.7 6-4.7s5.3 1.5 6 4.7"/><circle cx="16.5" cy="9" r="2.6"/><path d="M15 15.6c2.7.2 4.6 1.6 5.5 4.4"/></svg>',
+  rev:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.5 7.5 15.5 11M8.5 16.5 15.5 13"/></svg>',
+  docp:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2.5" width="14" height="19" rx="2"/><circle cx="12" cy="9" r="2.4"/><path d="M8 16.5c.6-2 2.2-2.8 4-2.8s3.4.8 4 2.8"/></svg>',
+  plug:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7V3M15 7V3"/><path d="M6 7h12v4a6 6 0 0 1-12 0Z"/><path d="M12 17v4"/></svg>',
+  card:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2"/><path d="M5.5 16.2c.5-1.6 1.7-2.3 3-2.3s2.5.7 3 2.3M14.5 10h5M14.5 13.5h4"/></svg>',
+  file:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2.5h8l5 5V21.5H6z"/><path d="M14 2.5V8h5"/><path d="M9 13h7M9 16.5h5"/></svg>',
+  sun:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>',
+  moon:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>',
+  reset:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4.5V9h4.5"/></svg>',
+  ok:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12.5l5 5L20 6.5"/></svg>',
+  x:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 5l14 14M19 5L5 19"/></svg>',
+  warn:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2.5 20h19z"/><path d="M12 9.5v4.5M12 17.2v.3"/></svg>'
+};
+const DOC_ICON={passport:ICONS.docp,unhcr_card:ICONS.card,asylum_document:ICONS.file,other:ICONS.file};
+const docTypeLabel=t=>dict[t]?T(t):T("otherDoc");
+let toastTimer=null;
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2600);}
+function badgeDecision(dec){const m={rejected_duplicate:["bad","evalRejectedTitle"],auto_match:["ok","evalAutoTitle"],review:["warn","evalReviewTitle"],new:["pri","evalNewTitle"]};const b=m[dec];return b?`<span class="badge ${b[0]}">${T(b[1])}</span>`:"";}
+function scoreBars(bk){
+  const rows=[["bName",bk.name,W.name],["bDob",bk.dob,W.dob],["bGender",bk.gender,W.gender],["bNationality",bk.nationality,W.nationality],["bPhone",bk.phone,W.phone],["bMother",bk.motherName,W.motherName],["bIds",bk.identifiers,20]];
+  return `<div class="bars">`+rows.map(([k,v,max])=>{const pct=Math.min(100,Math.abs(v)/max*100);return `<div class="bar"><div class="bl"><span>${T(k)}</span><span dir="ltr">${v>0?"+":""}${v}</span></div><div class="tr"><div class="fi ${v<0?"neg":""}" style="width:${pct}%"></div></div></div>`;}).join("")+`</div>`;
+}
+function candCard(c,actionsHtml){
+  const p=personById(c.personId);if(!p)return "";
+  return `<div class="mcard"><div class="mhead"><span class="score" dir="ltr">${c.score}</span><div><div style="font-weight:600">${esc(lang==="ar"?p.nameAr:p.nameEn)}</div><div class="fs12 mut">${esc(lang==="ar"?p.nameEn:p.nameAr)} · <span class="mono">${p.upi}</span> · ${esc(p.nationality)} · ${fmtDate(p.dob)}</div></div><span class="spacer"></span>${(c.reasons||[]).map(r=>`<span class="badge">${esc(r)}</span>`).join(" ")}</div>${scoreBars(c.breakdown)}${actionsHtml||""}</div>`;
+}
+
+/* ═══════════════ Views ═══════════════ */
+function vDashboard(){
+  const stats=[["statPersons",DB.persons.length,ICONS.ppl],["statDocuments",DB.documents.length,ICONS.docp],["statPending",DB.reviews.filter(r=>r.status==="pending").length,ICONS.rev],["statResolved",DB.reviews.filter(r=>r.status!=="pending").length,ICONS.ok]];
+  return `<h1>${T("dashTitle")}</h1><p class="sub">${T("dashSubtitle")}</p>
+  <div class="grid4">${stats.map(([k,v,ic])=>`<div class="card stat"><div class="ic">${ic}</div><div><div class="v">${v}</div><div class="l">${T(k)}</div></div></div>`).join("")}</div>
+  <div class="card mb16"><h2>${T("howItWorks")}</h2><div class="pipe">
+    <div class="step"><div class="n">1</div><div><div class="h">${T("pipe1")}</div><div class="d">${T("pipe1d")}</div></div></div>
+    <div class="step"><div class="n">2</div><div><div class="h">${T("pipe2")}</div><div class="d">${T("pipe2d")}</div></div></div>
+    <div class="step"><div class="n">3</div><div><div class="h">${T("pipe3")}</div><div class="d">${T("pipe3d")}</div></div></div>
+  </div></div>
+  <div class="card"><h2>${T("recentActivity")}</h2><div class="alist">${DB.audit.length?DB.audit.slice(0,10).map(a=>`<div class="aitem"><span class="tag">${esc(a.type)}</span><span>${T(a.msgKey)}${a.extra?` — <span class="mono fs12">${esc(a.extra)}</span>`:""}</span><span class="when">${fmtDate(a.at)}</span></div>`).join(""):`<div class="empty">${T("auditEmpty")}</div>`}</div></div>`;
+}
+/* Registration wizard state */
+let wiz=null;
+function resetWiz(){wiz={step:1,image:null,mrz:null,ocr:null,ocrLoading:false,ocrError:null,ocrPhoto:null,form:{nameAr:"",nameEn:"",dob:"",dobPrecision:"full",gender:"male",nationality:"",phone:"",motherName:"",unhcrNumber:"",docType:"passport",docNumber:"",issuingCountry:"",issueDate:"",expiryDate:""},evalResult:null,final:null};}
+function stepsBar(){return `<div class="steps">${[1,2,3,4].map(n=>`<div class="s ${wiz.step===n?"on":""}"><div class="b">${n}</div><span>${T("step"+n)}</span></div>${n<4?'<div class="sep"></div>':""}`).join("")}</div>`;}
+function vRegister(){
+  if(!wiz)resetWiz();
+  let body="";
+  if(wiz.step===1){
+    const checks=wiz.mrz?wiz.mrz.checks.map(c=>`<div class="v ${c.ok?"ok":"fail"}">${c.ok?ICONS.ok:ICONS.x}<span>${c.ok?T("mrzCheckValid"):T("mrzCheckInvalid")} (${T(c.f)})</span></div>`).join(""):"";
+    const extra=wiz.mrz?vMrzExtras():"";
+    body=`
+    <div class="drop">
+      ${wiz.image?`<img src="${wiz.image}" alt="document" /><br/><br/>`:`<div style="font-weight:600;margin-bottom:4px">${T("uploadPrompt")}</div><div class="fs12 mut" style="margin-bottom:14px">${T("uploadHint")}</div>`}
+      <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" style="display:none" />
+      <button class="btn outline" id="btn-choose">${T("chooseFile")}</button>
+    </div>
+    ${vOcrResults()}
+    <div class="note">${T("ocrStandalone")}</div>
+    <div class="card mt16">
+      <div class="field"><label>${T("mrzLabel")}</label><textarea id="mrz-input" rows="2" spellcheck="false" placeholder="${esc(T("mrzPh"))}">${esc(wiz.mrzText||"")}</textarea></div>
+      <div class="actions"><button class="btn" id="btn-parse-mrz">${T("parseMrz")}</button><button class="btn outline" id="btn-skip">${T("skipOcr")}</button></div>
+      ${wiz.mrz?`<div class="mt16"><h2>${T("ocrResults")}</h2>${extra}<div class="vlist">${checks}</div><div class="actions"><button class="btn" id="btn-continue">${T("continueVerify")}</button></div></div>`:""}
+      ${wiz.mrzError?`<div class="vlist"><div class="v fail">${ICONS.x}<span>${T("mrzBad")}</span></div></div>`:""}
+    </div>`;
+  } else if(wiz.step===2){
+    const f=wiz.form;
+    const inp=(id,key,type,val,extra)=>`<div class="field"><label for="${id}">${T(key)}</label><input id="${id}" type="${type}" value="${esc(val)}" ${extra||""}/></div>`;
+    body=`<form id="reg-form" onsubmit="return false">
+    <div class="card mb16"><h2>${T("personSection")}</h2><div class="formgrid">
+      ${inp("f-nameAr","nameAr","text",f.nameAr,'dir="rtl" required')}
+      ${inp("f-nameEn","nameEn","text",f.nameEn,'dir="ltr" required')}
+      ${inp("f-dob","dob","date",f.dob,"required")}
+      <div class="field"><label for="f-prec">${T("dobPrecision")}</label><select id="f-prec">
+        <option value="full" ${f.dobPrecision==="full"?"selected":""}>${T("precFull")}</option>
+        <option value="month" ${f.dobPrecision==="month"?"selected":""}>${T("precMonth")}</option>
+        <option value="year" ${f.dobPrecision==="year"?"selected":""}>${T("precYear")}</option></select></div>
+      <div class="field"><label for="f-gender">${T("gender")}</label><select id="f-gender">
+        <option value="male" ${f.gender==="male"?"selected":""}>${T("male")}</option>
+        <option value="female" ${f.gender==="female"?"selected":""}>${T("female")}</option></select></div>
+      ${inp("f-nationality","nationality","text",f.nationality,"required")}
+      ${inp("f-phone","phone","tel",f.phone,'dir="ltr"')}
+      ${inp("f-mother","motherName","text",f.motherName,'dir="rtl"')}
+      ${inp("f-unhcr","unhcrNumber","text",f.unhcrNumber,'dir="ltr"')}
+    </div></div>
+    <div class="card mb16"><h2>${T("documentSection")}</h2><div class="formgrid">
+      <div class="field"><label for="f-doctype">${T("docType")}</label><select id="f-doctype">
+        <option value="passport" ${f.docType==="passport"?"selected":""}>${T("passport")}</option>
+        <option value="asylum_document" ${f.docType==="asylum_document"?"selected":""}>${T("asylum_document")}</option>
+        <option value="unhcr_card" ${f.docType==="unhcr_card"?"selected":""}>${T("unhcr_card")}</option>
+        <option value="other" ${f.docType==="other"?"selected":""}>${T("otherDoc")}</option></select></div>
+      ${inp("f-docnum","docNumber","text",f.docNumber,'dir="ltr" required')}
+      ${inp("f-isscountry","issuingCountry","text",f.issuingCountry,"required")}
+      ${inp("f-issdate","issueDate","date",f.issueDate,"")}
+      ${inp("f-expdate","expiryDate","date",f.expiryDate,"")}
+    </div></div>
+    <div class="actions"><button class="btn outline" id="btn-back1">${T("back")}</button><button class="btn" id="btn-run-check">${T("runCheck")}</button></div></form>`;
+  } else if(wiz.step===3){
+    const ev=wiz.evalResult;
+    const kind=ev.decision==="rejected_duplicate"?"bad":ev.decision==="auto_match"?"ok":ev.decision==="review"?"warn":"ok";
+    const title={rejected_duplicate:"evalRejectedTitle",auto_match:"evalAutoTitle",review:"evalReviewTitle",new:"evalNewTitle"}[ev.decision];
+    const bodyKey={rejected_duplicate:"evalRejectedBody",auto_match:"evalAutoBody",review:"evalReviewBody",new:"evalNewBody"}[ev.decision];
+    const ruleKey=ev.rule==="R1_EXACT_DOCUMENT"?"ruleR1":ev.rule==="R2_UNHCR_NUMBER"?"ruleR2":ev.rule?"ruleR3":null;
+    let existing="";
+    if(ev.decision==="rejected_duplicate"||ev.decision==="auto_match"){
+      const p=personById(ev.personId);
+      existing=`<div class="mcard"><div class="mhead">${ev.score!==undefined?`<span class="score" dir="ltr">${ev.score}</span>`:""}<div><div style="font-weight:600">${esc(lang==="ar"?p.nameAr:p.nameEn)}</div><div class="fs12 mut">${esc(lang==="ar"?p.nameEn:p.nameAr)} · <span class="mono">${p.upi}</span> · ${esc(p.nationality)} · ${fmtDate(p.dob)}</div></div><span class="spacer"></span><a class="btn outline sm" href="#/person/${p.id}">${T("viewPerson")}</a></div></div>`;
+    }
+    const cands=ev.candidates&&ev.candidates.length&&ev.decision!=="rejected_duplicate"&&ev.decision!=="auto_match"?`<h2>${T("candidates")}</h2>${ev.candidates.map(c=>candCard(c)).join("")}`:"";
+    body=`${stepsBar()}
+    <div class="banner ${kind}"><div class="bt" id="text-result-title">${T(title)}</div><div class="bb">${T(bodyKey)}</div>${ruleKey?`<div class="fs12 mut" style="margin-top:6px">${T("matchedRule")}: ${T(ruleKey)}</div>`:""}</div>
+    ${existing}${cands}
+    <div class="actions">
+      <button class="btn outline" id="btn-back2">${T("back")}</button>
+      ${ev.decision!=="rejected_duplicate"?`<button class="btn" id="btn-confirm">${T("confirmRegistration")}</button>`:`<button class="btn" id="btn-startnew">${T("startNew")}</button>`}
+    </div>`;
+    return `<h1>${T("regTitle")}</h1><p class="sub">${T("regSubtitle")}</p>${body}`;
+  } else if(wiz.step===4){
+    const f=wiz.final;
+    const map={linked:["ok","doneLinked","evalAutoBody"],created:["ok","doneCreated","evalNewBody"],review:["warn","doneReview","doneReviewBody"]};
+    const [kind,tt,bb]=map[f.kind];
+    const p=f.personId?personById(f.personId):null;
+    body=`${stepsBar()}
+    <div class="banner ${kind}"><div class="bt">${T(tt)}</div><div class="bb">${T(bb)}</div>${p?`<div class="fs12" style="margin-top:6px"><span class="mono">${p.upi}</span></div>`:""}</div>
+    <div class="actions">${p?`<a class="btn outline" href="#/person/${p.id}">${T("viewPerson")}</a>`:""}${f.kind==="review"?`<a class="btn outline" href="#/reviews">${T("navReviews")}</a>`:""}<button class="btn" id="btn-startnew">${T("startNew")}</button></div>`;
+    return `<h1>${T("regTitle")}</h1><p class="sub">${T("regSubtitle")}</p>${body}`;
+  }
+  return `<h1>${T("regTitle")}</h1><p class="sub">${T("regSubtitle")}</p>${stepsBar()}${body}`;
+}
+function vOcrResults(){
+  if(wiz.ocrLoading)return `<div class="note">${T("ocrRunning")}</div>`;
+  if(wiz.ocrError)return `<div class="vlist"><div class="v fail">${ICONS.x}<span>${T("ocrError")}</span></div></div>`;
+  if(!wiz.ocr)return "";
+  const fields=wiz.ocr.fields||{};
+  const rows=Object.keys(fields).map(k=>{
+    const f=fields[k],cls=f.confidence==="high"?"ok":f.confidence==="medium"?"warn":"fail";
+    const ic=f.confidence==="high"?ICONS.ok:f.confidence==="medium"?ICONS.warn:ICONS.x;
+    return `<div class="v ${cls}">${ic}<span><b>${T(k)}:</b> ${esc(f.value)}</span></div>`;
+  }).join("");
+  const typeBadge=wiz.ocr.docType?`<div class="mb16"><span class="badge pri">${docTypeLabel(wiz.ocr.docType)}</span></div>`:"";
+  const photo=wiz.ocrPhoto?`<div class="mb16"><div class="k" style="margin-bottom:6px">${T("extractedPhoto")}</div><img src="${wiz.ocrPhoto}" alt="" style="width:90px;height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--border)" /></div>`:"";
+  return `<div class="mt16"><h2>${T("ocrResults")}</h2>${typeBadge}${photo}<div class="vlist">${rows}</div><div class="actions"><button class="btn" id="btn-ocr-continue">${T("ocrUseData")}</button></div></div>`;
+}
+function vMrzExtras(){
+  const f=wiz.mrz.fields;
+  const kv=[["nameEn",f.nameEn],["docNumber",f.docNumber],["dob",f.dob],["gender",f.gender?T(f.gender):""],["expiryDate",f.expiryDate],["nationality",f.natCode]];
+  return `<div class="kv mb16">${kv.filter(([k,v])=>v).map(([k,v])=>`<div><div class="k">${T(k)}</div><div class="val" dir="ltr">${esc(v)}</div></div>`).join("")}</div>`;
+}
+function vPersons(){
+  const q=(window.__searchQ||"").trim().toLowerCase();
+  const qn=normDocNo(q);
+  let list=DB.persons.slice().sort((a,b)=>b.id-a.id);
+  if(q){list=list.filter(p=>{
+    if(p.nameAr.includes(q)||normalizeArabic(p.nameAr).includes(normalizeArabic(q)))return true;
+    if(p.nameEn.toLowerCase().includes(q))return true;
+    if(p.upi.toLowerCase().includes(q))return true;
+    if(qn&&docsOf(p.id).some(d=>d.docNumberNorm.includes(qn)))return true;
+    return false;});}
+  const rows=list.map(p=>{
+    const docs=docsOf(p.id);
+    return `<tr data-pid="${p.id}"><td class="pname"><a href="#/person/${p.id}">${esc(lang==="ar"?p.nameAr:p.nameEn)}</a><div class="sec">${esc(lang==="ar"?p.nameEn:p.nameAr)}</div></td>
+    <td><span class="mono fs12">${p.upi}</span></td><td>${esc(p.nationality)}</td>
+    <td>${fmtDate(p.dob)}${p.dobPrecision!=="full"?` <span class="fs12 mut">(${T("estimated")})</span>`:""}</td>
+    <td>${docs.map(d=>`<span class="badge">${docTypeLabel(d.docType)}</span>`).join(" ")}</td></tr>`;}).join("");
+  return `<h1>${T("personsTitle")}</h1><p class="sub">${T("personsSubtitle")}</p>
+  <input class="search" id="search" placeholder="${esc(T("searchPlaceholder"))}" value="${esc(window.__searchQ||"")}" />
+  <div class="card" style="padding:4px 14px">${list.length?`<table><thead><tr><th>${T("colPerson")}</th><th>${T("colUpi")}</th><th>${T("colNationality")}</th><th>${T("colDob")}</th><th>${T("colDocs")}</th></tr></thead><tbody>${rows}</tbody></table>`:`<div class="empty">${T("noResults")}</div>`}</div>`;
+}
+function vPerson(id){
+  const p=personById(id);
+  if(!p)return `<div class="empty">${T("noResults")}</div>`;
+  const docs=docsOf(id);
+  const today=new Date().toISOString().slice(0,10);
+  const photo=personPhoto(p)?`<img src="${personPhoto(p)}" alt="" style="width:74px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0" />`:"";
+  return `<div style="display:flex;gap:14px;align-items:flex-start">${photo}<div><h1 style="margin:0 0 4px">${esc(lang==="ar"?p.nameAr:p.nameEn)}</h1><p class="sub" style="margin:0">${esc(lang==="ar"?p.nameEn:p.nameAr)} · <span class="mono">${p.upi}</span></p></div></div>
+  <div class="card mb16 mt16"><div class="kv">
+    <div><div class="k">${T("dob")}</div><div class="val">${fmtDate(p.dob)}${p.dobPrecision!=="full"?` (${T("estimated")})`:""}</div></div>
+    <div><div class="k">${T("gender")}</div><div class="val">${T(p.gender)}</div></div>
+    <div><div class="k">${T("nationality")}</div><div class="val">${esc(p.nationality)}</div></div>
+    ${p.phone?`<div><div class="k">${T("phone")}</div><div class="val" dir="ltr">${esc(p.phone)}</div></div>`:""}
+    ${p.motherName?`<div><div class="k">${T("motherName")}</div><div class="val">${esc(p.motherName)}</div></div>`:""}
+    ${p.unhcrNumber?`<div><div class="k">${T("unhcrNumber")}</div><div class="val mono" dir="ltr">${esc(p.unhcrNumber)}</div></div>`:""}
+    <div><div class="k">${T("registeredAt")}</div><div class="val">${fmtDate(p.createdAt)}</div></div>
+  </div></div>
+  <div class="card"><h2>${T("linkedDocuments")} (${docs.length})</h2>
+  ${docs.map(d=>{const expired=d.expiryDate&&d.expiryDate<today;
+    return `<div class="doc" data-docid="${d.id}" style="cursor:pointer"><div class="ic">${DOC_ICON[d.docType]||ICONS.file}</div><div style="flex:1">
+    <div style="font-weight:600">${docTypeLabel(d.docType)} <span class="mono fs12" dir="ltr">${esc(d.docNumber)}</span></div>
+    <div class="fs12 mut">${esc(d.issuingCountry)}${d.issueDate?` · ${fmtDate(d.issueDate)}`:""}${d.expiryDate?` ← ${fmtDate(d.expiryDate)}`:""}</div></div>
+    <span class="badge ${expired?"bad":"ok"}">${expired?T("expired"):T("active")}</span></div>`;}).join("")}
+  <div class="note">${T("docLinkNote")}</div></div>
+  <div class="actions"><button class="btn danger sm" id="btn-delete-person" data-pid="${p.id}">${T("deletePerson")}</button></div>`;
+}
+function vDocument(id){
+  const d=docById(id);
+  if(!d)return `<div class="empty">${T("noResults")}</div>`;
+  const p=personById(d.personId);
+  const today=new Date().toISOString().slice(0,10);
+  const expired=d.expiryDate&&d.expiryDate<today;
+  const photo=d.photo?`<div class="mb16"><img src="${d.photo}" alt="" style="width:110px;height:135px;object-fit:cover;border-radius:8px;border:1px solid var(--border)" /></div>`:"";
+  const ocr=d.ocrFields?Object.keys(d.ocrFields).map(k=>{
+    const f=d.ocrFields[k],cls=f.confidence==="high"?"ok":f.confidence==="medium"?"warn":"fail";
+    const ic=f.confidence==="high"?ICONS.ok:f.confidence==="medium"?ICONS.warn:ICONS.x;
+    return `<div class="v ${cls}">${ic}<span><b>${T(k)}:</b> ${esc(f.value)}</span></div>`;
+  }).join(""):"";
+  const ocrSection=d.ocrFields?`<div class="card mb16"><h2>${T("ocrResults")}</h2><div class="vlist">${ocr}</div></div>`:`<div class="note mb16">${T("noOcrData")}</div>`;
+  return `<h1>${docTypeLabel(d.docType)}</h1><p class="sub"><a href="#/person/${p.id}">${esc(lang==="ar"?p.nameAr:p.nameEn)}</a> · <span class="mono">${p.upi}</span></p>
+  <div class="card mb16">${photo}<div class="kv">
+    <div><div class="k">${T("docNumber")}</div><div class="val mono" dir="ltr">${esc(d.docNumber)}</div></div>
+    <div><div class="k">${T("issuingCountry")}</div><div class="val">${esc(d.issuingCountry)}</div></div>
+    ${d.issueDate?`<div><div class="k">${T("issueDate")}</div><div class="val">${fmtDate(d.issueDate)}</div></div>`:""}
+    ${d.expiryDate?`<div><div class="k">${T("expiryDate")}</div><div class="val">${fmtDate(d.expiryDate)}${expired?` · ${T("expired")}`:""}</div></div>`:""}
+  </div></div>
+  ${ocrSection}
+  <div class="actions"><a class="btn outline" href="#/person/${p.id}">${T("back")}</a></div>`;
+}
+function vReviews(){
+  const pending=DB.reviews.filter(r=>r.status==="pending");
+  const resolved=DB.reviews.filter(r=>r.status!=="pending").sort((a,b)=>b.id-a.id);
+  const pendHtml=pending.length?pending.map(r=>{
+    const p=r.payload.person,d=r.payload.document;
+    const kv=[["nameAr",p.nameAr],["nameEn",p.nameEn],["dob",`${p.dob}${p.dobPrecision!=="full"?" ("+T("estimated")+")":""}`],["gender",T(p.gender)],["nationality",p.nationality],["docType",docTypeLabel(d.docType)],["docNumber",d.docNumber],["issuingCountry",d.issuingCountry]];
+    return `<div class="card mb16"><h2>${T("reviewCase")} #${r.id} <span class="badge warn">${T("evalReviewTitle")}</span></h2>
+    <div class="fs12 mut" style="margin-bottom:8px">${T("incomingData")}:</div>
+    <div class="kv mb16">${kv.filter(([k,v])=>v).map(([k,v])=>`<div><div class="k">${T(k)}</div><div class="val">${esc(v)}</div></div>`).join("")}</div>
+    <h2>${T("candidates")}</h2>
+    ${r.candidates.map(c=>candCard(c,`<div class="actions"><button class="btn sm" data-act="link" data-rid="${r.id}" data-pid="${c.personId}">${T("actionLink")}</button></div>`)).join("")}
+    <div class="actions"><button class="btn outline sm" data-act="new" data-rid="${r.id}">${T("actionNew")}</button><button class="btn danger sm" data-act="reject" data-rid="${r.id}">${T("actionReject")}</button></div></div>`;
+  }).join(""):`<div class="card"><div class="empty">${T("reviewsEmpty")}</div></div>`;
+  const resHtml=resolved.length?`<h2 class="mt16">${T("resolvedCases")}</h2><div class="card" style="padding:4px 14px"><table><tbody>${resolved.map(r=>{
+    const st={linked:["ok","linkedS"],new_person:["pri","newPersonS"],rejected:["bad","rejectedS"]}[r.status];
+    return `<tr style="cursor:default"><td>#${r.id}</td><td>${esc(lang==="ar"?r.payload.person.nameAr:r.payload.person.nameEn)}</td><td><span class="badge ${st[0]}">${T(st[1])}</span></td><td class="mut fs12">${fmtDate(r.resolvedAt)}</td></tr>`;}).join("")}</tbody></table></div>`:"";
+  return `<h1>${T("reviewsTitle")}</h1><p class="sub">${T("reviewsSubtitle")}</p>${pendHtml}${resHtml}`;
+}
+
+/* ═══════════════ Integrations (simulated locally) ═══════════════ */
+function personSummary(p){return{upi:p.upi,nameAr:p.nameAr,nameEn:p.nameEn,dob:p.dob,dobPrecision:p.dobPrecision,gender:p.gender,nationality:p.nationality};}
+function groupBy(arr,f){return arr.reduce((a,x)=>{const k=f(x)||"unknown";a[k]=(a[k]||0)+1;return a;},{});}
+const INT_SIM={
+  verify(){const norm=normDocNo("P04412876");const d=DB.documents.find(x=>x.docType==="passport"&&x.docNumberNorm===norm);const p=d?personById(d.personId):null;audit("integration","aud_int_verify",p?p.upi:"");saveDB();return p?{matched:true,matchedBy:"document",person:personSummary(p)}:{matched:false};},
+  person(){const p=DB.persons.find(x=>x.upi==="FRN-2026-000001")||DB.persons[0];if(!p)return{error:"not_found"};return{...personSummary(p),phone:p.phone,motherName:p.motherName,unhcrNumber:p.unhcrNumber,documents:docsOf(p.id).map(d=>({docType:d.docType,docNumber:d.docNumber,issuingCountry:d.issuingCountry,issueDate:d.issueDate,expiryDate:d.expiryDate,status:d.status}))};},
+  birth(){const p=DB.persons.find(x=>x.upi==="FRN-2026-000002")||DB.persons[0];if(!p)return{error:"not_found"};audit("integration","aud_int_birth",p.upi);saveDB();return{eventId:Date.now()%100000,status:"accepted",mother:personSummary(p)};},
+  stats(){audit("integration","aud_int_stats","");saveDB();return{generatedAt:new Date().toISOString(),totals:{persons:DB.persons.length,documents:DB.documents.length},byNationality:groupBy(DB.persons,p=>p.nationality),byGender:groupBy(DB.persons,p=>p.gender),byDocumentType:groupBy(DB.documents,d=>d.docType),byDobPrecision:groupBy(DB.persons,p=>p.dobPrecision)};},
+  series(){const g=groupBy(DB.persons,p=>(p.createdAt||"").slice(0,7));return{generatedAt:new Date().toISOString(),granularity:"month",series:Object.entries(g).sort(([a],[b])=>a.localeCompare(b)).map(([month,count])=>({month,count}))};}
+};
+function epRow(sim,method,path,scope,descKey){
+  return `<div class="ep"><div class="head"><span class="mtd ${method.toLowerCase()}">${method}</span><span class="eppath">${path}</span><span class="scp">${scope}</span>${sim?`<button class="btn outline sm" data-sim="${sim}" style="margin-inline-start:auto">${T("intTry")}</button>`:""}</div><p class="mut fs13" style="margin:8px 0 0">${T(descKey)}</p><div id="out-${sim||path.replace(/\W/g,"")}"></div></div>`;
+}
+function vIntegrations(){
+  return `<h1>${T("intTitle")}</h1><p class="sub">${T("intSubtitle")}</p>
+  <div class="card mb16"><p class="mut fs13" style="margin:0">${T("intAuthNote")}</p><p class="mut fs13" style="margin:8px 0 0">${T("intStandaloneNote")}</p></div>
+  <div class="card mb16">
+    <div class="ephead2"><div class="ic">${ICONS.reg}</div><div><h2 style="margin:0">${T("intMoh")}</h2><div class="mut fs12"><span>${T("intDemoKey")}: </span><span class="mono" dir="ltr">moh-demo-key-2026</span></div></div></div>
+    <p class="mut fs13">${T("intMohDesc")}</p>
+    ${epRow("verify","GET","/api/integration/v1/persons/verify","identity.verify","intVerifyDesc")}
+    ${epRow("person","GET","/api/integration/v1/persons/{upi}","persons.read","intPersonDesc")}
+    ${epRow("birth","POST","/api/integration/v1/events/birth","events.write","intBirthDesc")}
+    ${epRow(null,"POST","/api/integration/v1/events/death","events.write","intDeathDesc")}
+  </div>
+  <div class="card mb16">
+    <div class="ephead2"><div class="ic">${ICONS.dash}</div><div><h2 style="margin:0">${T("intMop")}</h2><div class="mut fs12"><span>${T("intDemoKey")}: </span><span class="mono" dir="ltr">mop-demo-key-2026</span></div></div></div>
+    <p class="mut fs13">${T("intMopDesc")}</p>
+    ${epRow("stats","GET","/api/integration/v1/stats/summary","stats.read","intStatsDesc")}
+    ${epRow("series","GET","/api/integration/v1/stats/registrations","stats.read","intSeriesDesc")}
+  </div>
+  <div class="card">
+    <div class="ephead2"><div class="ic">${ICONS.plug}</div><h2 style="margin:0">${T("intWebhooks")}</h2></div>
+    <p class="mut fs13">${T("intWebhooksDesc")}</p>
+    <pre class="jsonout" style="max-height:none">POST /api/integration/v1/webhooks\nX-API-Key: moh-demo-key-2026\n\n{ "url": "https://moh.example.gov/hooks/sijil",\n  "events": ["person.created", "document.linked"] }</pre>
+  </div>`;
+}
+
+/* ═══════════════ Router & events ═══════════════ */
+function route(){
+  const h=location.hash||"#/dashboard";
+  if(h.startsWith("#/person/"))return{page:"person",id:Number(h.split("/")[2])};
+  if(h.startsWith("#/document/"))return{page:"document",id:Number(h.split("/")[2])};
+  if(h.startsWith("#/register"))return{page:"register"};
+  if(h.startsWith("#/persons"))return{page:"persons"};
+  if(h.startsWith("#/reviews"))return{page:"reviews"};
+  if(h.startsWith("#/integrations"))return{page:"integrations"};
+  return{page:"dashboard"};
+}
+function render(){
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+  const r=route();
+  const nav=[["dashboard","navDashboard",ICONS.dash,"#/dashboard"],["register","navRegister",ICONS.reg,"#/register"],["persons","navPersons",ICONS.ppl,"#/persons"],["reviews","navReviews",ICONS.rev,"#/reviews"],["integrations","navIntegrations",ICONS.plug,"#/integrations"]];
+  const pend=DB.reviews.filter(x=>x.status==="pending").length;
+  document.getElementById("nav").innerHTML=nav.map(([id,k,ic,href])=>`<a href="${href}" class="${r.page===id||((r.page==="person"||r.page==="document")&&id==="persons")?"active":""}">${ic}<span>${T(k)}</span>${id==="reviews"&&pend?`<span class="cnt">${pend}</span>`:""}</a>`).join("");
+  document.querySelectorAll("[data-t]").forEach(el=>el.textContent=T(el.dataset.t));
+  document.getElementById("btn-lang").textContent=T("langToggle");
+  const dark=document.documentElement.classList.contains("dark");
+  document.getElementById("btn-theme").innerHTML=dark?ICONS.sun:ICONS.moon;
+  document.getElementById("btn-reset").innerHTML=ICONS.reset+`<span>${T("resetData")}</span>`;
+  const view=document.getElementById("view");
+  view.innerHTML=r.page==="dashboard"?vDashboard():r.page==="register"?vRegister():r.page==="persons"?vPersons():r.page==="person"?vPerson(r.id):r.page==="document"?vDocument(r.id):r.page==="integrations"?vIntegrations():vReviews();
+  bindView(r);
+}
+function collectForm(){
+  const g=id=>document.getElementById(id).value.trim();
+  wiz.form={nameAr:g("f-nameAr"),nameEn:g("f-nameEn"),dob:g("f-dob"),dobPrecision:g("f-prec"),gender:g("f-gender"),nationality:g("f-nationality"),phone:g("f-phone"),motherName:g("f-mother"),unhcrNumber:g("f-unhcr"),docType:g("f-doctype"),docNumber:g("f-docnum"),issuingCountry:g("f-isscountry"),issueDate:g("f-issdate"),expiryDate:g("f-expdate")};
+}
+function inputFromWiz(){const f=wiz.form;return{person:{nameAr:f.nameAr,nameEn:f.nameEn,dob:f.dob,dobPrecision:f.dobPrecision,gender:f.gender,nationality:f.nationality,phone:f.phone,motherName:f.motherName,unhcrNumber:f.unhcrNumber},document:{docType:f.docType,docNumber:f.docNumber,issuingCountry:f.issuingCountry,issueDate:f.issueDate,expiryDate:f.expiryDate,photo:wiz.ocrPhoto||null,ocrFields:wiz.ocr?wiz.ocr.fields:null}};}
+function bindView(r){
+  const on=(id,fn)=>{const el=document.getElementById(id);if(el)el.addEventListener("click",fn);};
+  if(r.page==="register"){
+    on("btn-choose",()=>document.getElementById("file-input").click());
+    const fi=document.getElementById("file-input");
+    if(fi)fi.addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{
+      wiz.image=rd.result;wiz.ocr=null;wiz.ocrError=null;wiz.ocrPhoto=null;wiz.ocrLoading=true;render();
+      runOcr(rd.result,f.name).then(r=>{wiz.ocrLoading=false;wiz.ocr=r;render();
+        if(r.photoBox)cropPhoto(rd.result,r.photoBox).then(p=>{wiz.ocrPhoto=p;render();}).catch(()=>{});
+      }).catch(err=>{wiz.ocrLoading=false;wiz.ocrError=String(err&&err.message||err);render();});
+    };rd.readAsDataURL(f);});
+    on("btn-ocr-continue",()=>{const fields=wiz.ocr.fields||{};for(const k of OCR_FIELD_KEYS){if(fields[k])wiz.form[k]=fields[k].value;}if(wiz.ocr.docType)wiz.form.docType=wiz.ocr.docType;wiz.step=2;render();});
+    on("btn-parse-mrz",()=>{const txt=document.getElementById("mrz-input").value;wiz.mrzText=txt;const m=parseMrz(txt);wiz.mrzError=!m;wiz.mrz=m;
+      if(m){const f=m.fields;Object.assign(wiz.form,{nameEn:f.nameEn||wiz.form.nameEn,dob:f.dob||wiz.form.dob,gender:f.gender||wiz.form.gender,docNumber:f.docNumber||wiz.form.docNumber,expiryDate:f.expiryDate||wiz.form.expiryDate,docType:"passport"});}
+      render();});
+    on("btn-skip",()=>{wiz.step=2;render();});
+    on("btn-continue",()=>{wiz.step=2;render();});
+    on("btn-back1",()=>{wiz.step=1;render();});
+    on("btn-run-check",()=>{collectForm();const f=wiz.form;
+      if(!f.nameAr||!f.nameEn||!f.dob||!f.nationality||!f.docNumber||!f.issuingCountry){toast(T("requiredFields"));return;}
+      wiz.evalResult=evaluate(inputFromWiz());wiz.step=3;render();window.scrollTo(0,0);});
+    on("btn-back2",()=>{wiz.step=2;render();});
+    on("btn-confirm",()=>{
+      const ev=wiz.evalResult,input=inputFromWiz();
+      if(ev.decision==="auto_match"){const doc=addDocument(ev.personId,input.document);audit("doc_linked","aud_linked",personById(ev.personId).upi);wiz.final={kind:"linked",personId:ev.personId};}
+      else if(ev.decision==="new"){const p=createPerson(input.person);addDocument(p.id,input.document);audit("registered","aud_registered",p.upi);wiz.final={kind:"created",personId:p.id};}
+      else if(ev.decision==="review"){DB.reviews.push({id:++DB.seq.review,payload:input,candidates:ev.candidates,status:"pending",createdAt:new Date().toISOString()});audit("review_created","aud_review_created");wiz.final={kind:"review"};}
+      saveDB();wiz.step=4;render();window.scrollTo(0,0);});
+    on("btn-startnew",()=>{resetWiz();render();});
+  }
+  if(r.page==="persons"){
+    const s=document.getElementById("search");
+    if(s){s.addEventListener("input",e=>{window.__searchQ=e.target.value;const scroll=window.scrollY;render();const s2=document.getElementById("search");s2.focus();s2.setSelectionRange(s2.value.length,s2.value.length);window.scrollTo(0,scroll);});}
+    document.querySelectorAll("tr[data-pid]").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.tagName!=="A")location.hash="#/person/"+tr.dataset.pid;}));
+  }
+  if(r.page==="person"){
+    on("btn-delete-person",()=>{const btn=document.getElementById("btn-delete-person");const pid=Number(btn.dataset.pid);
+      if(!confirm(T("deletePersonConfirm")))return;
+      deletePerson(pid);toast(T("personDeleted"));location.hash="#/persons";render();});
+    document.querySelectorAll(".doc[data-docid]").forEach(el=>el.addEventListener("click",()=>{location.hash="#/document/"+el.dataset.docid;}));
+  }
+  if(r.page==="integrations"){
+    document.querySelectorAll("[data-sim]").forEach(b=>b.addEventListener("click",()=>{
+      const k=b.dataset.sim;const res=INT_SIM[k]();
+      const out=document.getElementById("out-"+k);
+      out.innerHTML=`<div class="mut" style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-top:10px">${T("intResponse")}</div><pre class="jsonout">${esc(JSON.stringify(res,null,2))}</pre>`;
+    }));
+  }
+  if(r.page==="reviews"){
+    document.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>{
+      const rid=Number(b.dataset.rid),act=b.dataset.act;
+      const rc=DB.reviews.find(x=>x.id===rid);if(!rc||rc.status!=="pending")return;
+      if(act==="link"){const pid=Number(b.dataset.pid);addDocument(pid,rc.payload.document);rc.status="linked";rc.resolvedPersonId=pid;audit("review_linked","aud_review_linked",personById(pid).upi);}
+      else if(act==="new"){const p=createPerson(rc.payload.person);addDocument(p.id,rc.payload.document);rc.status="new_person";rc.resolvedPersonId=p.id;audit("review_new","aud_review_new",p.upi);}
+      else{rc.status="rejected";audit("review_rejected","aud_review_rejected");}
+      rc.resolvedAt=new Date().toISOString();saveDB();toast(T("resolveDone"));render();
+    }));
+  }
+}
+/* Global toggles */
+document.getElementById("btn-lang").addEventListener("click",()=>{lang=lang==="ar"?"en":"ar";render();});
+document.getElementById("btn-theme").addEventListener("click",()=>{document.documentElement.classList.toggle("dark");render();});
+document.getElementById("btn-reset").addEventListener("click",()=>{if(confirm(T("resetConfirm"))){if(HAS_LS)localStorage.removeItem(LS_KEY);seed();resetWiz();toast(T("resetDone"));render();}});
+window.addEventListener("hashchange",()=>{if(route().page!=="register"&&wiz&&wiz.step===4)resetWiz();render();});
+if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark");
+loadDB();resetWiz();render();
+</script>
+  <script src="./sijil_template_integration.js"></script>
+</body>
+</html>
